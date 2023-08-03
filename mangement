@@ -1,0 +1,120 @@
+#Student Management System
+import csv
+#Define variables
+req_fields = ['roll','name']
+sms_database = 'students.csv'
+def show_menu():
+    print("-----------------------------------------------")
+    print("Welcome to the attendence system")
+    print("-----------------------------------------------")
+    print("1. Mark students P\A" )
+    print("2. Add New Student ")
+    print("3. View Students" )    
+    print("4. Search Students")
+    print("5. Delete Students")
+    print("6. Quit")         
+#creation of options
+#creating Records
+
+def create_record():
+    print ("------------------------------------------------") 
+    print ("---------------Add Students information---------")
+    print ("------------------------------------------------")
+    global req_fields
+    global sms_database
+    stud_data = []
+    for field in req_fields:
+        value = input("Enter" + field + ":" )
+        stud_data.append (value)
+
+    with open (sms_database,"a",encoding = "utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerrows([stud_data])
+    print("Data Saved Successfully")
+    print("Press any kry to Continue")
+    return
+
+#if user chooses option 3
+def display_student():
+    global req_fields
+    global sms_database
+    print("-----------------------------------------------------")      
+    print("--------------------Students Record------------------")
+    print("-----------------------------------------------------")
+    with open (sms_database,"r",encoding = "utf-8") as f:
+      reader = csv.reader(f)
+      for k in req_fields:
+          print(k,end='\t |')
+      print("\n---------------------------------------------------------------------") 
+      for row in reader:
+          for item in row:
+              print (item,end="\t |")
+          print("\n")
+      input("Press to continue")
+
+#If user chooses 4th option
+def search_record():
+    global req_fields
+    global sms_database
+    print("-----------------------------------------------------")
+    print("--------------------Search Student------------------")
+    print("-----------------------------------------------------")
+    roll = input("Enter rollno. to search:")
+    with open(sms_database,"r",encoding="utf-8") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if roll == row[0]:
+               print("-----------Student Found---------")
+               print("Roll: ", roll[0])
+               print("Name: ", roll[1])
+               break
+        else:
+            print("Roll no.not found")
+        input("Press any Key")
+
+#Deletion of record 5th option 
+def  delete_record():
+    global req_fields
+    global sms_database
+    print("-----------------------------------------------------")
+    print("--------------------Delete a Student------------------")
+    print("-----------------------------------------------------")        
+    roll = input(" Enter the roll no of the student: ")
+    stud_locate = False
+    Updated_req=[] 
+    with open (sms_database, "r", encoding = "utf-8") as f:
+        reader = csv.reader(f)
+        counter = 0
+        for row in reader:
+            if len(row) > 0:
+                if roll!=row[0]:
+                    Updated_req.append(row)
+                    counter +=1
+                else:
+                    stud_locate = True 
+    if stud_locate is True:
+        with open (sms_database,"w",encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerows (Updated_req)
+        print("Roll.no",roll,"deleted successfully")
+    else:
+        print("Roll not found")
+        input("Press any keu")
+    while True:
+        show_menu()
+        option = input("enter your option:")
+        if option == '1':
+          create_record()
+        if option == '2':
+            display_student()
+        if option == '3':
+            search_record()
+        if option == '4':
+            delete_record()
+        else:
+            break
+print("--------------------------------------------------------------------------")
+print("-----------------------------------thanks---------------------------------")                
+
+
+                    
